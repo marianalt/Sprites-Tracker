@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fortnite Sprite Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <div>
+      <h1>Fortnite Sprite Tracker</h1>
+      <p>Track if a sprite has been found, mastered, or lost.</p>
+    </div>
+    <div class="top-bar-actions">
+      <button id="printButton" class="reset-button">Save as PDF</button>
+      <button id="clearAll" class="reset-button">Reset all</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="auth-panel" id="authPanel">
+      <h2>Login</h2>
+      <p class="auth-tip">Enter an existing username/password or create a new account.</p>
+      <label class="auth-field">Username<input id="usernameInput" type="text" autocomplete="username" /></label>
+      <label class="auth-field">Password<input id="passwordInput" type="password" autocomplete="current-password" /></label>
+      <div class="auth-buttons">
+        <button id="loginButton" class="reset-button">Login</button>
+        <button id="registerButton" class="reset-button">Register</button>
+      </div>
+      <p id="authMessage" class="auth-message"></p>
+    </section>
+
+    <section class="user-panel hidden" id="userPanel">
+      <p>Logged in as <strong id="currentUserName"></strong></p>
+      <button id="logoutButton" class="reset-button">Logout</button>
+    </section>
+
+    <section class="tracker-panel hidden" id="trackerPanel">
+      <div class="grid" id="spriteGrid"></div>
+    </section>
+  </main>
+
+  <template id="spriteCardTemplate">
+    <article class="card">
+      <div class="card-image-wrap">
+        <img class="card-image" alt="Sprite image" />
+      </div>
+      <div class="card-body">
+        <h2 class="sprite-name"></h2>
+        <p class="sprite-variant"></p>
+        <div class="status-group">
+          <label><input type="checkbox" name="status" value="found" /><span>Found</span></label>
+          <label><input type="checkbox" name="status" value="master" /><span>Master</span></label>
+          <label><input type="checkbox" name="status" value="lost" /><span>Lost</span></label>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>

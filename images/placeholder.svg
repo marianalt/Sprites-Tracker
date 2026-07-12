@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" fill="none">
+  <rect width="400" height="400" rx="32" fill="#1f2937" />
+  <rect x="56" y="56" width="288" height="288" rx="24" fill="#111827" />
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="Inter, sans-serif" font-size="32">
+    image
+  </text>
+  <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" fill="#6b7280" font-family="Inter, sans-serif" font-size="20">
+    placeholder
+  </text>
+</svg>
