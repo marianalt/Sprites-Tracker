@@ -10,41 +10,144 @@
   <header class="top-bar">
     <div>
       <h1>Fortnite Sprite Tracker</h1>
-      <p>Track if a sprite has been found, mastered, or lost.</p>
+      <p>Track which sprites you have found and mastered.</p>
     </div>
     <div class="top-bar-actions">
-      <button id="printButton" class="reset-button">Save as PDF</button>
-      <button id="clearAll" class="reset-button">Reset all</button>
+      <button id="exportButton" class="reset-button logged-in-only hidden" type="button" aria-label="Export as CSV" title="Download your progress as a CSV file"><span class="label-long">Export </span>CSV</button>
+      <button id="compareButton" class="reset-button logged-in-only hidden" type="button" aria-label="Compare with a friend" title="Load a friend's exported CSV to compare"><span class="label-long">Compare with friend</span><span class="label-short">Compare</span></button>
+      <button id="printButton" class="reset-button" aria-label="Save as PDF"><span class="print-label-long">Save as </span>PDF</button>
+      <div class="account hidden" id="userPanel">
+        <button id="accountButton" class="account-button" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="accountMenu" title="Account">
+          <span id="accountInitial" class="account-initial" aria-hidden="true"></span>
+          <span class="visually-hidden">Account</span>
+        </button>
+        <div id="accountMenu" class="account-menu hidden" role="menu">
+          <p class="account-name">Signed in as <strong id="currentUserName"></strong></p>
+          <button id="clearAll" class="menu-item danger" type="button" role="menuitem">Reset all progress</button>
+          <button id="logoutButton" class="menu-item" type="button" role="menuitem">Log out</button>
+        </div>
+      </div>
     </div>
   </header>
 
   <main>
+    <div class="print-header" aria-hidden="true">
+      <h1>Fortnite Sprite Tracker</h1>
+      <p id="printMeta"></p>
+    </div>
+
     <section class="auth-panel" id="authPanel">
       <h2>Login</h2>
       <p class="auth-tip">Enter an existing username/password or create a new account.</p>
-      <label class="auth-field">Username<input id="usernameInput" type="text" autocomplete="username" /></label>
-      <label class="auth-field">Password<input id="passwordInput" type="password" autocomplete="current-password" /></label>
-      <div class="auth-buttons">
-        <button id="loginButton" class="reset-button">Login</button>
-        <button id="registerButton" class="reset-button">Register</button>
-      </div>
+      <form id="authForm" class="auth-form">
+        <label class="auth-field">Username<input id="usernameInput" type="text" autocomplete="username" /></label>
+        <label class="auth-field">Password<input id="passwordInput" type="password" autocomplete="current-password" /></label>
+        <div class="auth-buttons">
+          <button id="loginButton" class="reset-button" type="submit">Login</button>
+          <button id="registerButton" class="reset-button" type="button">Register</button>
+        </div>
+      </form>
       <p id="authMessage" class="auth-message"></p>
     </section>
 
-    <section class="user-panel hidden" id="userPanel">
-      <p>Logged in as <strong id="currentUserName"></strong></p>
-      <button id="logoutButton" class="reset-button">Logout</button>
-    </section>
-
     <section class="tracker-panel hidden" id="trackerPanel">
+      <div class="toolbar">
+        <div class="season-picker" id="seasonPicker">
+          <button id="seasonButton" class="season-button" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="seasonMenu">
+            <span class="season-button-label" id="seasonLabel">All seasons</span>
+            <svg class="season-chevron" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div id="seasonMenu" class="season-menu hidden">
+            <div class="season-menu-head"><span>Season</span><span>Default</span></div>
+            <div id="seasonOptions" class="season-options"></div>
+          </div>
+        </div>
+        <input id="searchInput" class="toolbar-search" type="search" placeholder="Search sprites or variants" aria-label="Search sprites" />
+        <div id="statusFilter" class="status-filter" role="radiogroup" aria-label="Filter by status">
+          <label class="status-option" title="Show every sprite">
+            <input type="radio" name="statusFilter" value="all" checked />
+            <span class="status-option-name">All</span>
+            <span class="status-option-count" data-count="all"></span>
+          </label>
+          <label class="status-option" title="Sprites you have not found yet">
+            <input type="radio" name="statusFilter" value="none" />
+            <span class="status-option-name">Missing</span>
+            <span class="status-option-count" data-count="none"></span>
+          </label>
+          <label class="status-option" title="Sprites you have found, including mastered ones">
+            <input type="radio" name="statusFilter" value="found" />
+            <span class="status-option-name">Found</span>
+            <span class="status-option-count" data-count="found"></span>
+          </label>
+          <label class="status-option" title="Sprites you have mastered">
+            <input type="radio" name="statusFilter" value="master" />
+            <span class="status-option-name">Mastered</span>
+            <span class="status-option-count" data-count="master"></span>
+          </label>
+        </div>
+        <div id="compareBar" class="compare-bar hidden">
+          <span id="compareLabel" class="compare-label"></span>
+          <div class="status-filter compare-filter" role="radiogroup" aria-label="Compare with friend">
+            <label class="status-option" title="Sprites your friend has found or mastered and you have not">
+              <input type="radio" name="compareFilter" value="theyHave" checked />
+              <span class="status-option-name"><span id="compareName">Friend</span> has</span>
+              <span class="status-option-count" id="theyHaveCount"></span>
+            </label>
+            <label class="status-option" title="Sprites you have found or mastered and your friend has not">
+              <input type="radio" name="compareFilter" value="youHave" />
+              <span class="status-option-name">You have</span>
+              <span class="status-option-count" id="youHaveCount"></span>
+            </label>
+          </div>
+          <button id="closeCompare" class="compare-close" type="button" aria-label="Stop comparing" title="Stop comparing">&times;</button>
+        </div>
+        <div class="summary">
+          <div class="progress" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
+          <p id="summary" class="summary-text" aria-live="polite"></p>
+        </div>
+        <div id="compareScope" class="status-filter compare-scope hidden" role="radiogroup" aria-label="Compare what">
+          <label class="status-option" title="Sprites where one of you is ahead: found or mastered">
+            <input type="radio" name="compareScope" value="different" checked />
+            <span class="status-option-name">All different</span>
+            <span class="status-option-count" id="compareScopeDifferentCount"></span>
+          </label>
+          <label class="status-option" title="Only sprites one of you has mastered and the other hasn't">
+            <input type="radio" name="compareScope" value="mastered" />
+            <span class="status-option-name">Mastered only</span>
+            <span class="status-option-count" id="compareScopeMasteredCount"></span>
+          </label>
+          <label class="status-option" title="Every sprite, with your friend's status on each card">
+            <input type="radio" name="compareScope" value="everything" />
+            <span class="status-option-name">All</span>
+            <span class="status-option-count" id="compareScopeEverythingCount"></span>
+          </label>
+        </div>
+      </div>
+      <p id="notice" class="notice hidden" role="status"></p>
+      <p id="emptyMessage" class="empty-message hidden">No sprites match.</p>
       <div class="grid" id="spriteGrid"></div>
     </section>
   </main>
 
+  <dialog id="confirmDialog" class="dialog" aria-labelledby="confirmTitle">
+    <form method="dialog">
+      <h2 id="confirmTitle">Reset all progress?</h2>
+      <p id="confirmMessage"></p>
+      <div class="dialog-actions">
+        <button value="cancel" class="reset-button" autofocus>Cancel</button>
+        <button value="confirm" class="danger-button">Reset everything</button>
+      </div>
+    </form>
+  </dialog>
+
   <template id="spriteCardTemplate">
     <article class="card">
       <div class="card-image-wrap">
-        <img class="card-image" alt="Sprite image" />
+        <img class="card-image" alt="Sprite image" loading="lazy" />
+        <div class="compare-tags">
+          <span class="compare-tag friend"><span class="tag-name"></span><span class="tag-icon"></span><span class="tag-word"></span></span>
+          <span class="compare-tag mine"><span class="tag-name">You</span><span class="tag-icon"></span><span class="tag-word"></span></span>
+        </div>
       </div>
       <div class="card-body">
         <h2 class="sprite-name"></h2>
@@ -52,12 +155,13 @@
         <div class="status-group">
           <label><input type="checkbox" name="status" value="found" /><span>Found</span></label>
           <label><input type="checkbox" name="status" value="master" /><span>Master</span></label>
-          <label><input type="checkbox" name="status" value="lost" /><span>Lost</span></label>
         </div>
       </div>
     </article>
   </template>
 
+  <input id="compareFile" type="file" accept=".csv,text/csv" hidden />
+  <script src="sprite-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

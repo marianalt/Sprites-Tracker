@@ -39,7 +39,7 @@ body::before {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 1.25rem 1.5rem;
+  padding: 0.85rem 1.5rem;
   background: rgba(15, 23, 42, 0.92);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
@@ -47,12 +47,13 @@ body::before {
 
 .top-bar-actions {
   display: flex;
+  align-items: center;
   gap: 0.75rem;
 }
 
 .top-bar h1 {
   margin: 0;
-  font-size: clamp(1.5rem, 2vw, 2.2rem);
+  font-size: clamp(1.3rem, 1.8vw, 1.8rem);
 }
 
 .top-bar p {
@@ -61,13 +62,17 @@ body::before {
 }
 
 .reset-button {
-  padding: 0.8rem 1.1rem;
+  padding: 0.6rem 1rem;
   border: 1px solid transparent;
   background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(59, 130, 246, 0.16));
   color: var(--text);
   border-radius: 999px;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.label-short {
+  display: none;
 }
 
 .reset-button:hover {
@@ -80,20 +85,26 @@ main {
 }
 
 .grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+/* Wide screens: two sprite boxes per row. */
+@media (min-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .sprite-row {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  border-radius: 1.25rem;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
   background: rgba(15, 23, 42, 0.72);
   border: 1px solid rgba(148, 163, 184, 0.14);
-  max-height: auto;
   overflow: hidden;
 }
 
@@ -107,43 +118,39 @@ main {
 
 .row-title {
   margin: 0;
-  font-size: 1.75rem;
+  font-size: 1.2rem;
 }
 
 .row-count {
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .variant-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 320px));
-  justify-content: center;
-  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  width: 320px;
-  min-width: 320px;
-  padding: 1rem;
-  border-radius: 1rem;
+  gap: 0.5rem;
+  flex: 0 0 140px;
+  width: 140px;
+  padding: 0.6rem;
+  border-radius: 0.85rem;
   background: rgba(15, 23, 42, 0.85);
   border: 1px solid var(--border);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-  max-height: 560px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   overflow: hidden;
 }
 
 .card-image-wrap {
   position: relative;
   width: 100%;
-  max-width: 320px;
   aspect-ratio: 1 / 1;
-  margin: 0 auto;
-  border-radius: 1rem;
+  border-radius: 0.6rem;
   overflow: hidden;
   background: linear-gradient(135deg, #0f172a, #111827);
 }
@@ -153,32 +160,38 @@ main {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .card-body {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.4rem;
 }
 
 .sprite-name {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
 
+/* The row header already shows the sprite name, so cards only show the variant. */
+.sprite-name {
+  display: none;
+}
+
 .sprite-variant {
-  margin: 0.35rem 0 0;
-  color: var(--muted);
-  font-size: 0.9rem;
+  margin: 0;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .status-group {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.3rem;
 }
 
 .status-group label {
@@ -187,24 +200,23 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border-radius: 0.85rem;
+  gap: 0.2rem;
+  padding: 0.35rem 0.1rem;
+  border-radius: 0.5rem;
   border: 1px solid rgba(148, 163, 184, 0.18);
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.68rem;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   min-width: 0;
-  white-space: normal;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
 }
 
 .status-group label::before {
   content: '';
-  width: 2rem;
-  height: 2rem;
-  border-radius: 0.5rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 0.3rem;
   border: 2px solid rgba(148, 163, 184, 0.4);
   background: rgba(15, 23, 42, 0.9);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
@@ -213,7 +225,6 @@ main {
 
 .status-group label span {
   display: block;
-  margin-top: 0.25rem;
 }
 
 .status-group input {
@@ -235,10 +246,10 @@ main {
 .status-group label.checked::after {
   content: '✔';
   position: absolute;
-  top: 0.9rem;
+  top: 0.4rem;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 1rem;
+  font-size: 0.75rem;
   color: rgba(56, 189, 248, 0.95);
 }
 
@@ -257,8 +268,729 @@ main {
   color: var(--text);
 }
 
-.user-panel {
-  margin-bottom: 1.5rem;
+
+.auth-panel {
+  max-width: 420px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid var(--border);
+}
+
+.auth-panel h2 {
+  margin-top: 0;
+}
+
+.auth-tip,
+.auth-message {
+  color: var(--muted);
+}
+
+.auth-message.error {
+  color: #f87171;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.auth-field input,
+.toolbar-search {
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text);
+  font: inherit;
+}
+
+.auth-field input:focus,
+.toolbar-search:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.account {
+  position: relative;
+}
+
+.account-button {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.35));
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.account-button:hover,
+.account-button[aria-expanded="true"] {
+  border-color: var(--accent);
+}
+
+.account-button:focus-visible,
+.menu-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.account-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  min-width: 220px;
+  padding: 0.5rem;
+  border-radius: 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.account-name {
+  margin: 0 0 0.35rem;
+  padding: 0.5rem 0.6rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.account-name strong {
+  color: var(--text);
+}
+
+.menu-item {
+  padding: 0.55rem 0.6rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: var(--surface-strong);
+}
+
+.menu-item.danger {
+  color: #f87171;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: auto minmax(160px, 1fr) auto;
+  grid-template-areas:
+    "season search status"
+    "summary summary summary";
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.season-picker { grid-area: season; }
+.toolbar-search { grid-area: search; min-width: 0; }
+.status-filter,
+.compare-bar { grid-area: status; }
+
+/* Split compare view (wide screens): toggle replaced by a label, two halves below. */
+.compare-label {
+  display: none;
+  color: #fde68a;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compare-bar.split {
+  justify-content: flex-end;
+}
+
+.compare-bar.split .compare-label {
+  display: block;
+}
+
+.compare-bar.split .compare-filter {
+  display: none;
+}
+
+.grid.split {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.compare-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  background: rgba(250, 204, 21, 0.03);
+}
+
+.compare-pane[data-side="youHave"] {
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.03);
+}
+
+.pane-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 0.25rem;
+}
+
+.pane-title {
+  margin: 0;
+  font-size: 1.3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pane-count {
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.16);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.pane-empty {
+  margin: 0.5rem 0.25rem;
+  color: var(--muted);
+}
+
+.pane-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* While comparing, "All / Mastered only" takes the place of the progress line. */
+.status-filter.compare-scope {
+  grid-area: summary;
+  justify-self: start;
+  border-color: rgba(250, 204, 21, 0.4);
+}
+
+/* Compare mode: friend's two-way filter plus a close button */
+.compare-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.compare-filter {
+  flex: 1;
+  min-width: 0;
+  border-color: rgba(250, 204, 21, 0.4);
+}
+
+.compare-filter .status-option-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#compareName {
+  display: inline-block;
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+
+.compare-close {
+  flex: 0 0 auto;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.compare-close:hover {
+  border-color: var(--accent);
+}
+
+.compare-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.notice {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  background: rgba(250, 204, 21, 0.08);
+  color: #fde68a;
+  font-size: 0.88rem;
+}
+
+.notice.error {
+  border-color: rgba(248, 113, 113, 0.45);
+  background: rgba(248, 113, 113, 0.1);
+  color: #fecaca;
+}
+
+/* While comparing, each card shows two tags on the image, left-aligned:
+   the friend's status at the top, yours at the bottom. */
+.compare-tags {
+  display: none;
+  position: absolute;
+  inset: 0.35rem;
+  z-index: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.comparing .compare-tags {
+  display: flex;
+}
+
+.compare-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: 100%;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(2, 6, 23, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.compare-tag .tag-name {
+  max-width: 4.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text);
+}
+
+/* By default the tags show only the status ("★ Mastered"). Hover the image
+   (tap it on touch screens, or tab into the card) to add whose status it is. */
+.compare-tag .tag-name {
+  display: none;
+}
+
+.card-image-wrap:hover .compare-tag .tag-name,
+.card.show-tags .compare-tag .tag-name,
+.card:has(:focus-visible) .compare-tag .tag-name {
+  display: inline;
+}
+
+/* The name goes after the status: "★ Mastered · Alice". */
+.compare-tag .tag-icon { order: 1; }
+.compare-tag .tag-word { order: 2; }
+.compare-tag .tag-name { order: 3; }
+
+.compare-tag .tag-name::before {
+  content: '· ';
+  color: var(--muted);
+  font-style: normal;
+}
+
+.comparing .card-image-wrap {
+  cursor: pointer;
+}
+
+.compare-tag.mine .tag-name {
+  font-style: italic;
+}
+
+.compare-tag[data-status="found"] {
+  color: #7dd3fc;
+  border-color: rgba(56, 189, 248, 0.55);
+}
+
+.compare-tag[data-status="master"] {
+  color: #fde68a;
+  border-color: rgba(250, 204, 21, 0.6);
+}
+
+@media (max-width: 900px) {
+  .toolbar {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "season search"
+      "status status"
+      "summary summary";
+  }
+}
+
+/* Segmented status filter: All / Missing / Found / Mastered */
+.status-filter {
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.status-option {
+  position: relative;
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.status-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.status-option:hover {
+  color: var(--text);
+  background: var(--surface-strong);
+}
+
+.status-option:has(input:checked) {
+  color: var(--text);
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(168, 85, 247, 0.35));
+  box-shadow: inset 0 0 0 1px rgba(192, 132, 252, 0.45);
+}
+
+.status-option:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.status-option-count {
+  min-width: 1.5rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.16);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.status-option:has(input:checked) .status-option-count {
+  background: rgba(15, 23, 42, 0.45);
+}
+.summary { grid-area: summary; }
+
+/* Phones: tighter status filter and season label. */
+@media (max-width: 640px) {
+  .status-option {
+    padding: 0.45rem 0.3rem;
+    gap: 0.25rem;
+    font-size: 0.78rem;
+  }
+
+  .status-option-count {
+    min-width: 1.2rem;
+    padding: 0.05rem 0.3rem;
+    font-size: 0.65rem;
+  }
+
+  /* Phones: "C7 S4" instead of "C7 S4 · Override". */
+  .season-label-name {
+    display: none;
+  }
+
+  /* Phones: when expanded, compare tags show just name + icon ("Alice ★", "You ✓"). */
+  .card.show-tags .compare-tag .tag-word,
+  .card:has(:focus-visible) .compare-tag .tag-word,
+  .card-image-wrap:hover .compare-tag .tag-word {
+    display: none;
+  }
+
+  .compare-tag .tag-name {
+    max-width: 3.2rem;
+  }
+
+  /* Phones show "★ Alice", so no separator is needed. */
+  .compare-tag .tag-name::before {
+    content: none;
+  }
+
+  /* Phones: "PDF" / "CSV" / "Compare" instead of the long labels. */
+  .print-label-long,
+  .label-long {
+    display: none;
+  }
+
+  .label-short {
+    display: inline;
+  }
+
+  /* Title on one line, buttons wrap underneath when there isn't room. */
+  .top-bar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .top-bar h1 {
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
+
+  .top-bar-actions {
+    gap: 0.4rem;
+    margin-left: auto;
+  }
+
+  .top-bar-actions .reset-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Round, pill-shaped search box */
+.toolbar-search {
+  border-radius: 999px;
+  padding-left: 1.1rem;
+  padding-right: 1.1rem;
+}
+
+.season-picker {
+  position: relative;
+}
+
+.season-button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem 0.7rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(168, 85, 247, 0.45);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(168, 85, 247, 0.2));
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.season-button:hover,
+.season-button[aria-expanded="true"] {
+  border-color: #c084fc;
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+}
+
+.season-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.season-chevron {
+  color: #c084fc;
+  transition: transform 0.2s ease;
+}
+
+.season-button[aria-expanded="true"] .season-chevron {
+  transform: rotate(180deg);
+}
+
+.season-menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.5rem);
+  z-index: 3;
+  min-width: 260px;
+  padding: 0.5rem;
+  border-radius: 1.25rem;
+  background: var(--surface);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.season-menu-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0.75rem 0.5rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.season-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.season-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-right: 0.75rem;
+  border-radius: 999px;
+  transition: background 0.15s ease;
+}
+
+.season-option:hover {
+  background: var(--surface-strong);
+}
+
+.season-choose {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.92rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.season-choose[aria-pressed="true"] {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(168, 85, 247, 0.3));
+  font-weight: 600;
+}
+
+.season-choose:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* Round "default" radio */
+.season-default {
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.season-default input {
+  appearance: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(148, 163, 184, 0.55);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.season-default input:hover {
+  border-color: #c084fc;
+}
+
+.season-default input:checked {
+  border-color: #c084fc;
+  background: radial-gradient(circle, #c084fc 0 45%, transparent 50%);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+}
+
+.season-default input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.summary-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.progress {
+  flex: 1;
+  max-width: 320px;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-strong), #a855f7);
+  transition: width 0.3s ease;
+}
+
+.empty-message {
+  text-align: center;
+  color: var(--muted);
+}
+
+.sprite-row.complete {
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.sprite-row.complete .row-count {
+  color: var(--accent);
+}
+
+.reset-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .hidden {
@@ -266,10 +998,132 @@ main {
 }
 
 @media (max-width: 640px) {
-  .top-bar {
-    flex-direction: column;
-    align-items: stretch;
+  .top-bar p {
+    display: none;
   }
+
+  main {
+    padding: 1rem;
+  }
+
+  /* Compact sprite boxes and cards on phones. */
+  .grid {
+    gap: 0.6rem;
+  }
+
+  .sprite-row {
+    padding: 0.6rem;
+    gap: 0.45rem;
+    border-radius: 0.85rem;
+  }
+
+  .row-title {
+    font-size: 1rem;
+  }
+
+  .row-count {
+    font-size: 0.75rem;
+  }
+
+  .variant-grid {
+    gap: 0.45rem;
+  }
+
+  .card {
+    flex-basis: 100px;
+    width: 100px;
+    padding: 0.4rem;
+    gap: 0.3rem;
+    border-radius: 0.65rem;
+  }
+
+  .card-image-wrap {
+    border-radius: 0.45rem;
+  }
+
+  .sprite-variant {
+    font-size: 0.72rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .status-group {
+    gap: 0.2rem;
+  }
+
+  .status-group label {
+    padding: 0.25rem 0;
+    font-size: 0.6rem;
+    border-radius: 0.4rem;
+  }
+
+  .status-group label::before {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-width: 1.5px;
+  }
+
+  .status-group label.checked::after {
+    top: 0.22rem;
+    font-size: 0.6rem;
+  }
+}
+
+.print-header {
+  display: none;
+}
+
+.dialog {
+  width: min(420px, calc(100vw - 2rem));
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.dialog::backdrop {
+  background: rgba(2, 6, 23, 0.7);
+  backdrop-filter: blur(3px);
+}
+
+.dialog h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.dialog p {
+  margin: 0 0 1.25rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.danger-button {
+  padding: 0.6rem 1rem;
+  border: 1px solid #dc2626;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.danger-button:hover {
+  background: #b91c1c;
+}
+
+.dialog button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 @media print {
@@ -283,75 +1137,152 @@ main {
     color: #000;
   }
 
+  body::before,
   .top-bar,
-  .auth-panel,
-  .user-panel,
-  .top-bar-actions,
-  .reset-button {
-    page-break-after: avoid;
+  .toolbar,
+  .empty-message,
+  .dialog {
+    display: none !important;
   }
 
-  .top-bar-actions {
-    display: none;
+  main {
+    padding: 0;
+  }
+
+  .print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid #000;
+  }
+
+  .print-header h1 {
+    margin: 0;
+    font-size: 16pt;
+  }
+
+  .print-header p {
+    margin: 0;
+    font-size: 9pt;
+    color: #333;
+  }
+
+  .grid {
+    gap: 0.5rem;
   }
 
   .sprite-row {
-    page-break-inside: avoid;
     break-inside: avoid;
-    margin-bottom: 0.75rem;
-    border: 1px solid #ccc;
-    padding: 0.5rem;
+    page-break-inside: avoid;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid #bbb;
+    border-radius: 0.5rem;
+    background: #fff;
   }
 
-  .sprite-row:nth-of-type(2n) {
-    page-break-after: always;
+  .sprite-row.complete {
+    border-color: #000;
+  }
+
+  .row-title {
+    color: #000;
+    font-size: 13pt;
+  }
+
+  .row-count,
+  .sprite-row.complete .row-count {
+    color: #333;
+    font-size: 9pt;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .variant-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.4rem;
   }
 
   .card {
     width: auto;
-    min-width: 0;
-    padding: 0.4rem;
-    max-height: none;
-    page-break-inside: auto;
-    break-inside: auto;
+    padding: 0.3rem;
+    gap: 0.25rem;
     box-shadow: none;
     border: 1px solid #ccc;
     background: #fff;
   }
 
   .card-image-wrap {
-    max-height: 80px;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
+    height: 70px;
+    aspect-ratio: auto;
+    background: none;
   }
 
-  .card-image {
-    position: static;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  /* On paper each card names its sprite: "Water – Gold". */
+  .card-body .sprite-name {
+    display: inline;
+    color: #000;
+    font-size: 9pt;
+  }
+
+  .card-body {
+    display: block;
+  }
+
+  .sprite-variant {
+    display: inline;
+    color: #000;
+    font-size: 9pt;
+    font-weight: 400;
+  }
+
+  .sprite-variant:not(:empty)::before {
+    content: ' – ';
   }
 
   .status-group {
-    gap: 0.35rem;
+    margin-top: 0.25rem;
+    gap: 0.2rem;
+  }
+
+  .status-group label,
+  .status-group label span {
+    color: #555;
   }
 
   .status-group label {
-    padding: 0.45rem;
-    font-size: 7.5pt;
+    padding: 0.2rem 0;
+    font-size: 7pt;
+    border-color: #ccc;
+    background: none;
   }
 
   .status-group label::before {
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    border: 1px solid #555;
+    background: none;
+    box-shadow: none;
   }
 
-  .user-panel {
-    display: none !important;
+  .status-group label.checked {
+    border: 1.5px solid #000;
+    background: none;
+  }
+
+  .status-group label.checked span {
+    color: #000;
+    font-weight: 700;
+  }
+
+  .status-group label.checked::after {
+    top: 0.1rem;
+    color: #000;
+    font-size: 7pt;
   }
 }

@@ -1,197 +1,147 @@
+# Sprite list.
+#
+# Each sprite needs an `id`, a `name`, a `season` and a list of `variants`.
+# The season dropdown is built from the `season` values, newest last in this file
+# (it lists them newest first).
+# Image files are found automatically from the variant name:
+#   Classic  -> images/<file>.png
+#   Other    -> images/<variant>_<file>.png   (e.g. images/holofoil_water.png)
+# `file` defaults to the sprite id; set it only when the image name differs.
+#
+# To add a new sprite: drop its images in images/ and add an entry below.
+# To add a new variant (e.g. "Holofoil"): add it to the sprite's variants list.
+# Run `node tools/check-sprites.mjs` to find images that aren't listed yet.
+#
+# Do not rename an existing `id` - saved progress is keyed on it.
+
 sprites:
   - id: water
     name: Water
-    images:
-      - water.png
-      - gold_water.png
-      - gummy_water.png
-      - galaxy_water.png
-      - holofoil_water.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
-      - Holofoil
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy, Holofoil]
   - id: earth
     name: Earth
-    images:
-      - earth.png
-      - gold_earth.png
-      - gummy_earth.png
-      - galaxy_earth.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy]
   - id: fire
     name: Fire
-    images:
-      - fire.png
-      - gold_fire.png
-      - gummy_fire.png
-      - galaxy_fire.png
-      - holofoil_fire.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
-      - Holofoil
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy, Holofoil]
   - id: duck
     name: Duck
-    images:
-      - duck.png
-      - gold_duck.png
-      - gummy_duck.png
-      - galaxy_duck.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy, Holofoil]
   - id: ghost
     name: Ghost
-    images:
-      - ghost.png
-      - gold_ghost.png
-      - gummy_ghost.png
-      - galaxy_ghost.png
-      - holofoil_ghost.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
-      - Holofoil
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy, Holofoil]
   - id: dream
     name: Dream
-    images:
-      - dream.png
-      - gold_dream.png
-      - gummy_dream.png
-      - galaxy_dream.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy]
   - id: demon
     name: Demon
-    images:
-      - demon.png
-      - gold_demon.png
-      - gummy_demon.png
-      - galaxy_demon.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy]
   - id: Punk
     name: Punk
-    images:
-      - punk.png
-      - gold_punk.png
-      - gummy_punk.png
-      - galaxy_punk.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
+    season: C7 S3 · Runners
+    file: punk
+    variants: [Classic, Gold, Gummy, Galaxy]
   - id: king
     name: King
-    images:
-      - king.png
-      - gold_king.png
-      - gummy_king.png
-      - galaxy_king.png
-      - holofoil_king.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
-      - Holofoil
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy, Holofoil]
   - id: zero-point
     name: Zero Point
-    images:
-      - zero-point.png
-      - gold_zero-point.png
-      - gummy_zero-point.png
-      - galaxy_zero-point.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy]
   - id: burnt-peanut
     name: Burnt Peanut
-    images:
-      - burnt-peanut.png
-    variants:
-      - Classic
+    season: C7 S3 · Runners
+    variants: [Classic]
   - id: fishy
     name: Fishy
-    images:
-      - fishy.png
-      - gold_fishy.png
-      - gummy_fishy.png
-      - galaxy_fishy.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy]
   - id: striker
     name: Striker
-    images:
-      - striker.png
-      - gold_striker.png
-      - gummy_striker.png
-      - galaxy_striker.png
-      - holofoil_striker.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
-      - Holofoil
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy, Holofoil]
   - id: aura
     name: Aura
-    images:
-      - aura.png
-      - gold_aura.png
-      - gummy_aura.png
-      - galaxy_aura.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy]
   - id: boss
     name: Boss
-    images:
-      - boss.png
-      - gold_boss.png
-      - gummy_boss.png
-      - galaxy_boss.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
+    season: C7 S3 · Runners
+    variants: [Classic, Gold, Gummy, Galaxy]
   - id: grim-reaper
     name: Grim Reaper
-    images:
-      - grim.png
-      - gold_grim.png
-      - gummy_grim.png
-      - galaxy_grim.png
-    variants:
-      - Classic
-      - Gold
-      - Gummy
-      - Galaxy
+    season: C7 S3 · Runners
+    file: grim
+    variants: [Classic, Gold, Gummy, Galaxy]
+  - id: adventure
+    name: Adventure
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: bush
+    name: Bush
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: crown
+    name: Crown
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master, Loot Hacker]
+  - id: eightbit
+    name: 8-Bit
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: jackrabbit
+    name: Jackrabbit
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: jonesy
+    name: Jonesy
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: killswitch
+    name: Killswitch
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: klombo
+    name: Klombo
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: megaman
+    name: Mega Man
+    season: C7 S4 · Override
+    variants: [Classic]
+  - id: onigiri
+    name: Onigiri
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: overshield
+    name: Overshield
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: shadow
+    name: Shadow
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: sonic
+    name: Sonic
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: stormscout
+    name: Storm Scout
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: tails
+    name: Tails
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
+  - id: xray
+    name: X-Ray
+    season: C7 S4 · Override
+    variants: [Classic, Gold, Cheat Master]
