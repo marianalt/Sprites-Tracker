@@ -899,7 +899,13 @@ function populateSeasons(groups) {
     radio.value = season;
     radio.checked = season === defaultSeason;
     radio.setAttribute('aria-label', `Make ${seasonName(season)} the default season`);
-    radio.addEventListener('change', () => saveDefaultSeason(season));
+    // Making a season the default also switches to it.
+    radio.addEventListener('change', () => {
+      saveDefaultSeason(season);
+      selectSeason(season);
+      setSeasonMenuOpen(false);
+      seasonButton.focus();
+    });
     radioLabel.appendChild(radio);
 
     row.append(choose, radioLabel);
