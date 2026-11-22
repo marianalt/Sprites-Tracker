@@ -36,7 +36,12 @@
       <p id="printMeta"></p>
     </div>
 
-    <section class="auth-panel" id="authPanel">
+    <div id="appLoading" class="app-loading" role="status" aria-live="polite">
+      <span class="spinner" aria-hidden="true"></span>
+      <span class="visually-hidden">Loading…</span>
+    </div>
+
+    <section class="auth-panel hidden" id="authPanel">
       <h2>Login</h2>
       <p class="auth-tip">Enter an existing username/password or create a new account.</p>
       <form id="authForm" class="auth-form">

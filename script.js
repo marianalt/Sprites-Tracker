@@ -16,6 +16,7 @@ const accountButton = document.getElementById('accountButton');
 const accountMenu = document.getElementById('accountMenu');
 const accountInitial = document.getElementById('accountInitial');
 const trackerPanel = document.getElementById('trackerPanel');
+const appLoading = document.getElementById('appLoading');
 const authForm = document.getElementById('authForm');
 const searchInput = document.getElementById('searchInput');
 const statusFilter = document.getElementById('statusFilter');
@@ -719,6 +720,7 @@ function logoutUser() {
 }
 
 function updateAuthUI() {
+  appLoading.classList.add('hidden');
   const user = loadCurrentUser();
   const currentUserName = document.getElementById('currentUserName');
   const isLoggedIn = Boolean(user);
@@ -938,6 +940,9 @@ const pageTitle = document.title;
 window.addEventListener('beforeprint', preparePrint);
 window.addEventListener('afterprint', () => { document.title = pageTitle; });
 
+// Logged out: show the login form straight away. Logged in: keep the spinner
+// until the sprite list has loaded, so the login form never flashes.
+if (!loadCurrentUser()) updateAuthUI();
 loadSpriteConfig().then((loadedSprites) => {
   spriteGroups = loadedSprites;
   populateSeasons(loadedSprites);
