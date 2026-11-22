@@ -145,3 +145,71 @@ sprites:
     name: X-Ray
     season: C7 S4 · Override
     variants: [Classic, Gold, Cheat Master]
+  - id: halfpeeld
+    name: Halfpeel'd
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: repete
+    name: Re-Pete
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: barryofish
+    name: Barry O'Fish
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: wayfinder
+    name: Wayfinder
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: chester
+    name: Chester
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: exmarks
+    name: Exmarks
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: kelper
+    name: Kelper
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: lilsquibbly
+    name: Lil' Squibbly
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: squiplash
+    name: Squiplash
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: lilflacko
+    name: Lil' Flacko
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: transpondersnail
+    name: Transponder Snail
+    season: C7 MS · Treasure Hunters
+    variants: [Classic]
+  - id: liluzivertjr
+    name: Lil' Uzi Vert Jr.
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: sweetdreams
+    name: Sweet Dreams
+    season: C7 MS · Treasure Hunters
+    variants: [Classic]
+  - id: plundarrgh
+    name: Plundarrgh
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: minimiku
+    name: Mini Miku
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed]
+  - id: zee
+    name: Zee
+    season: C7 MS · Treasure Hunters
+    variants: [Classic]
+  - id: siroscar
+    name: Sir Oscar the Second
+    season: C7 MS · Treasure Hunters
+    variants: [Classic, Fortune, Cursed, Gold]

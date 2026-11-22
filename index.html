@@ -111,9 +111,9 @@
             <span class="status-option-name">All different</span>
             <span class="status-option-count" id="compareScopeDifferentCount"></span>
           </label>
-          <label class="status-option" title="Only sprites one of you has mastered and the other hasn't">
+          <label class="status-option" title="Only sprites one of you has mastered at level 5 and the other hasn't">
             <input type="radio" name="compareScope" value="mastered" />
-            <span class="status-option-name">Mastered only</span>
+            <span class="status-option-name">Mastered only <span class="scope-level">(level 5)</span></span>
             <span class="status-option-count" id="compareScopeMasteredCount"></span>
           </label>
           <label class="status-option" title="Every sprite, with your friend's status on each card">
@@ -155,6 +155,13 @@
         <div class="status-group">
           <label><input type="checkbox" name="status" value="found" /><span>Found</span></label>
           <label><input type="checkbox" name="status" value="master" /><span>Master</span></label>
+          <div class="level-picker" role="group" aria-label="Level">
+            <button type="button" class="level-pip" data-level="1">1</button>
+            <button type="button" class="level-pip" data-level="2">2</button>
+            <button type="button" class="level-pip" data-level="3">3</button>
+            <button type="button" class="level-pip" data-level="4">4</button>
+            <button type="button" class="level-pip" data-level="5">5</button>
+          </div>
         </div>
       </div>
     </article>

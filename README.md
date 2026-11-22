@@ -13,7 +13,10 @@ The page loads `sprites.yml` with `fetch`, so open it through a web server rathe
 
 Don't rename an existing sprite `id` - saved progress is keyed on it.
 
+# Levels
+Tick **Found** or **Master** and the level buttons (1-5) appear under it, starting at 1. Level and mastered are separate: a sprite can be mastered at level 1.
+
 # Export and compare
-- **Export CSV** (top bar) downloads your progress (`player, season, sprite, variant, status, id`). It opens in Excel or Google Sheets.
-- **Compare with friend** (top bar) loads a friend's exported CSV. On wide screens the page splits in half: *"<friend> has"* on the left (they found or mastered it, you don't have it or only found it) and *"You have"* on the right (the reverse). On phones you switch between the two with a toggle. A second filter replaces the progress line: *All different* (default) shows sprites where one of you is ahead, *Mastered only* keeps just the ones one of you has mastered and the other hasn't, and *All* shows every sprite in one grid with your friend's status on each card. Each card shows the friend's status. Press × to stop comparing.
-- Rows are matched on the `id` column, so don't edit it.
+- **Export CSV** (top bar) downloads your progress (`player, season, sprite, variant, status, level, id`). It opens in Excel or Google Sheets.
+- **Compare with friend** (top bar) loads a friend's exported CSV. On wide screens the page splits in half: *"<friend> has"* on the left (they found or mastered it, you don't have it or only found it) and *"You have"* on the right (the reverse). On phones you switch between the two with a toggle. A second filter replaces the progress line: *All different* (default) shows sprites where one of you has a higher level, *Mastered only (level 5)* keeps just the ones one of you has mastered at level 5 and the other hasn't, and *All* shows every sprite in one grid with your friend's status on each card. Each card shows the friend's status. Press × to stop comparing.
+- Rows are matched on the `id` column, so don't edit it. Older files without a `level` column still work (every sprite counts as level 1).

@@ -59,15 +59,53 @@ const printMeta = document.getElementById('printMeta');
 const progressBar = document.getElementById('progressBar');
 let spriteGroups = [];
 
+// Progress per card: { status: 'found' | 'master', level: 1-5 }. Status and level are
+// independent (a sprite can be mastered at level 1); no entry = not found.
 const STATUSES = ['found', 'master'];
+const MAX_LEVEL = 5;
+
+function toLevel(value) {
+  const level = Number(value);
+  return Number.isInteger(level) && level >= 1 && level <= MAX_LEVEL ? level : 0;
+}
+
+function toStatus(value) {
+  const text = String(value ?? '').trim().toLowerCase();
+  if (text === 'mastered') return 'master';
+  return STATUSES.includes(text) ? text : '';
+}
+
+// Also reads older saves: plain 'found'/'master' strings (level 1) and plain level numbers.
+function normalizeEntry(value) {
+  if (value && typeof value === 'object') {
+    const status = toStatus(value.status);
+    return status ? { status, level: toLevel(value.level) || 1 } : null;
+  }
+  if (typeof value === 'number') {
+    const level = toLevel(value);
+    return level ? { status: level >= MAX_LEVEL ? 'master' : 'found', level } : null;
+  }
+  const status = toStatus(value);
+  return status ? { status, level: 1 } : null;
+}
+
+function entryStatus(entry) {
+  return entry ? entry.status : 'none';
+}
+
+function entryLevel(entry) {
+  return entry ? entry.level : 0;
+}
 
 function loadStatus() {
   const user = loadCurrentUser();
   if (!user) return {};
   try {
     const saved = JSON.parse(localStorage.getItem(`${STORAGE_KEY}:${user}`) || '{}');
-    // Drop statuses that no longer exist (e.g. the old "lost" status).
-    return Object.fromEntries(Object.entries(saved).filter(([, value]) => STATUSES.includes(value)));
+    // Unknown values (e.g. the old "lost" status) are dropped.
+    return Object.fromEntries(Object.entries(saved)
+      .map(([id, value]) => [id, normalizeEntry(value)])
+      .filter(([, entry]) => entry));
   } catch (error) {
     return {};
   }
@@ -194,8 +232,6 @@ function buildRow(group, status) {
     const image = card.querySelector('.card-image');
     const title = card.querySelector('.sprite-name');
     const variantLabel = card.querySelector('.sprite-variant');
-    const labels = [...card.querySelectorAll('.status-group label')];
-    const savedValue = status[sprite.id] || '';
     const article = card.querySelector('.card');
     article.dataset.spriteId = sprite.id;
     article.dataset.search = `${sprite.name} ${sprite.variant}`.toLowerCase();
@@ -208,12 +244,11 @@ function buildRow(group, status) {
     title.textContent = sprite.name;
     variantLabel.textContent = sprite.variant || '';
 
-    labels.forEach((label) => {
-      const input = label.querySelector('input');
-      input.dataset.spriteId = sprite.id;
-      input.checked = input.value === savedValue;
-      label.classList.toggle('checked', input.checked);
+    card.querySelectorAll('.status-group input').forEach((input) => { input.dataset.spriteId = sprite.id; });
+    card.querySelectorAll('.level-pip').forEach((pip) => {
+      pip.setAttribute('aria-label', `${sprite.name} ${sprite.variant}: level ${pip.dataset.level}`);
     });
+    syncCardInputs(article, status[sprite.id]);
 
     variantGrid.appendChild(card);
   });
@@ -226,8 +261,9 @@ function buildRow(group, status) {
 function countStatuses(ids, status) {
   const counts = { found: 0, mastered: 0, total: ids.length };
   ids.forEach((id) => {
-    if (status[id] === 'found' || status[id] === 'master') counts.found += 1;
-    if (status[id] === 'master') counts.mastered += 1;
+    const value = entryStatus(status[id]);
+    if (value !== 'none') counts.found += 1;
+    if (value === 'master') counts.mastered += 1;
   });
   return counts;
 }
@@ -276,8 +312,9 @@ function refreshView(status = loadStatus()) {
 
     let visibleInRow = 0;
     cards.forEach((card) => {
-      const value = status[card.dataset.spriteId] || 'none';
-      syncCardInputs(card, value);
+      const entry = status[card.dataset.spriteId];
+      const value = entryStatus(entry);
+      syncCardInputs(card, entry);
       // Counts on the status buttons follow the season and search, not the status itself.
       if (primary && inSeason && (!query || card.dataset.search.includes(query))) {
         optionCounts.all += 1;
@@ -287,21 +324,21 @@ function refreshView(status = loadStatus()) {
       }
       let shown = matchesFilter(value, filter);
       if (comparison) {
-        const friendValue = comparison.statuses[card.dataset.spriteId] || 'none';
+        const friendValue = comparison.statuses[card.dataset.spriteId];
         if (primary && inSeason && (!query || card.dataset.search.includes(query))) {
           // Side buttons count within the chosen scope; scope buttons count within the
           // chosen side (or both sides when they are shown side by side).
-          if (compareMatch('theyHave', compareScope, value, friendValue)) compareCounts.theyHave += 1;
-          if (compareMatch('youHave', compareScope, value, friendValue)) compareCounts.youHave += 1;
+          if (compareMatch('theyHave', compareScope, entry, friendValue)) compareCounts.theyHave += 1;
+          if (compareMatch('youHave', compareScope, entry, friendValue)) compareCounts.youHave += 1;
           const scopeSides = split || compareScope === 'everything' ? ['theyHave', 'youHave'] : [compareMode];
           scopeSides.forEach((scopeSide) => {
-            if (compareMatch(scopeSide, 'different', value, friendValue)) compareCounts.different += 1;
-            if (compareMatch(scopeSide, 'mastered', value, friendValue)) compareCounts.mastered += 1;
+            if (compareMatch(scopeSide, 'different', entry, friendValue)) compareCounts.different += 1;
+            if (compareMatch(scopeSide, 'mastered', entry, friendValue)) compareCounts.mastered += 1;
           });
           compareCounts.everything += 1;
         }
-        shown = compareMatch(side, compareScope, value, friendValue);
-        setCompareTags(card, value, friendValue);
+        shown = compareMatch(side, compareScope, entry, friendValue);
+        setCompareTags(card, entry, friendValue);
       }
       const matches = inSeason && (!query || card.dataset.search.includes(query)) && shown;
       card.classList.toggle('hidden', !matches);
@@ -334,21 +371,26 @@ function refreshView(status = loadStatus()) {
 }
 
 // Cards can appear twice in split view, so tick boxes are re-synced from saved progress.
-function syncCardInputs(card, value) {
+// The level picker only shows once the card is found or mastered.
+function syncCardInputs(card, entry) {
+  const value = entryStatus(entry);
+  const level = entryLevel(entry);
   card.querySelectorAll('.status-group input').forEach((input) => {
     input.checked = input.value === value;
     input.closest('label').classList.toggle('checked', input.checked);
+  });
+  card.classList.toggle('is-found', value !== 'none');
+  card.classList.toggle('is-mastered', value === 'master');
+  card.querySelectorAll('.level-pip').forEach((pip) => {
+    const pipLevel = Number(pip.dataset.level);
+    pip.classList.toggle('filled', pipLevel <= level);
+    pip.setAttribute('aria-pressed', String(pipLevel === level));
   });
 }
 
 // ---- Export / compare -------------------------------------------------------
 
 const STATUS_LABELS = { found: 'found', master: 'mastered' };
-
-// none < found < mastered: "has more" means a higher rank.
-function statusRank(value) {
-  return value === 'master' ? 2 : value === 'found' ? 1 : 0;
-}
 
 function compareFilterValue() {
   const checked = compareBar.querySelector('input:checked');
@@ -360,25 +402,40 @@ function compareScopeValue() {
   return checked ? checked.value : 'different';
 }
 
+// Status first (missing < found < mastered), then level breaks ties.
+function progressRank(entry) {
+  const rank = { none: 0, found: 1, master: 2 }[entryStatus(entry)];
+  return rank * 10 + entryLevel(entry);
+}
+
+// Mastered at the top level: what "Mastered only (level 5)" looks for.
+function isMaxedMaster(entry) {
+  return entryStatus(entry) === 'master' && entryLevel(entry) >= MAX_LEVEL;
+}
+
+// mine/theirs are progress entries (undefined = missing).
 // side: 'theyHave' (friend is ahead) or 'youHave' (you are ahead).
-// scope: 'different' (any difference), 'mastered' (only who has mastered it)
-// or 'everything' (every sprite, no difference needed).
+// scope: 'different' (better status, or same status and higher level),
+// 'mastered' (mastered at level 5 vs. not) or 'everything' (every sprite).
 function compareMatch(side, scope, mine, theirs) {
   if (scope === 'everything') return true;
   const [ahead, behind] = side === 'theyHave' ? [theirs, mine] : [mine, theirs];
-  if (scope === 'mastered') return ahead === 'master' && behind !== 'master';
-  return statusRank(ahead) > statusRank(behind);
+  if (scope === 'mastered') return isMaxedMaster(ahead) && !isMaxedMaster(behind);
+  return progressRank(ahead) > progressRank(behind);
 }
 
 const TAG_ICONS = { master: '★', found: '✓', none: '✕' };
 const TAG_WORDS = { master: 'Mastered', found: 'Found', none: 'Missing' };
 
-function fillCompareTag(tag, name, value) {
+// The tag shows icon + level ("★ Lv 3"); the colour says found vs. mastered.
+function fillCompareTag(tag, name, entry) {
+  const value = entryStatus(entry);
+  const level = entryLevel(entry);
   tag.dataset.status = value;
   tag.querySelector('.tag-name').textContent = name;
   tag.querySelector('.tag-icon').textContent = TAG_ICONS[value];
-  tag.querySelector('.tag-word').textContent = TAG_WORDS[value];
-  tag.title = `${name}: ${TAG_WORDS[value]}`;
+  tag.querySelector('.tag-word').textContent = level ? `Lv ${level}` : 'Missing';
+  tag.title = `${name}: ${TAG_WORDS[value]}${level ? `, level ${level}` : ''}`;
 }
 
 // Two tags on the image: the friend's status on top, yours underneath.
@@ -425,10 +482,12 @@ function exportCSV() {
   const user = loadCurrentUser();
   if (!user) return;
   const status = loadStatus();
-  const lines = [['player', 'season', 'sprite', 'variant', 'status', 'id']];
+  const lines = [['player', 'season', 'sprite', 'variant', 'status', 'level', 'id']];
   spriteGroups.forEach((group) => {
     group.variants.forEach((card) => {
-      lines.push([user, group.season, group.name, card.variant, STATUS_LABELS[status[card.id]] || '', card.id]);
+      const entry = status[card.id];
+      lines.push([user, group.season, group.name, card.variant,
+        STATUS_LABELS[entryStatus(entry)] || '', entryLevel(entry) || '', card.id]);
     });
   });
   const csv = lines.map((cells) => cells.map(csvEscape).join(',')).join('\r\n');
@@ -450,6 +509,8 @@ function readComparisonCSV(text, fileName) {
   const idColumn = header.indexOf('id');
   const statusColumn = header.indexOf('status');
   const playerColumn = header.indexOf('player');
+  // Older exports have no level column: those sprites count as level 1.
+  const levelColumn = header.indexOf('level');
   if (idColumn === -1 || statusColumn === -1) {
     throw new Error('This is not a sprite tracker export (missing "id" or "status" column).');
   }
@@ -462,8 +523,8 @@ function readComparisonCSV(text, fileName) {
     const value = (cells[statusColumn] || '').trim().toLowerCase();
     if (!id) return;
     if (!knownIds.has(id)) { unknown += 1; return; }
-    if (value === 'mastered' || value === 'master') statuses[id] = 'master';
-    else if (value === 'found') statuses[id] = 'found';
+    const status = toStatus(value);
+    if (status) statuses[id] = { status, level: (levelColumn !== -1 && toLevel((cells[levelColumn] || '').trim())) || 1 };
   });
 
   const fromFile = playerColumn !== -1 && rows[1] ? (rows[1][playerColumn] || '').trim() : '';
@@ -505,37 +566,33 @@ function stopComparison() {
   renderCards();
 }
 
-function updateLabelStyles(target) {
-  const labels = target.closest('.status-group').querySelectorAll('label');
-  labels.forEach((label) => {
-    label.classList.toggle('checked', label.querySelector('input').checked);
-  });
+function updateEntry(cardId, change) {
+  const cardStatus = loadStatus();
+  const entry = change(cardStatus[cardId]);
+  if (entry) cardStatus[cardId] = entry;
+  else delete cardStatus[cardId];
+  saveStatus(cardStatus);
+  refreshView(cardStatus);
 }
 
+// Found and Master are either/or. Ticking one starts the sprite at level 1 (or keeps
+// its level when switching between them); unticking clears it.
 function handleStatusChange(event) {
   const input = event.target;
-  if (input.tagName !== 'INPUT') return;
-
-  const cardStatus = loadStatus();
+  if (input.tagName !== 'INPUT' || !input.closest('.status-group')) return;
   const cardId = input.dataset.spriteId;
-  const statusGroup = input.closest('.status-group');
+  if (!cardId) return;
+  updateEntry(cardId, (entry) => (input.checked
+    ? { status: input.value, level: entryLevel(entry) || 1 }
+    : null));
+}
 
-  if (!cardId || !statusGroup) return;
-
-  const allInputs = Array.from(statusGroup.querySelectorAll('input'));
-
-  if (input.checked) {
-    allInputs.forEach((item) => {
-      if (item !== input) item.checked = false;
-    });
-    cardStatus[cardId] = input.value;
-  } else {
-    delete cardStatus[cardId];
-  }
-
-  saveStatus(cardStatus);
-  updateLabelStyles(input);
-  refreshView(cardStatus);
+function handleLevelClick(event) {
+  const pip = event.target.closest('.level-pip');
+  if (!pip) return false;
+  const level = Number(pip.dataset.level);
+  updateEntry(pip.closest('.card').dataset.spriteId, (entry) => (entry ? { ...entry, level } : entry));
+  return true;
 }
 
 function clearAllStatuses() {
@@ -579,7 +636,7 @@ function preparePrint() {
     if (compareScopeValue() === 'everything') {
       filters.push(`compared with ${comparison.name} (all sprites)`);
     } else if (grid.classList.contains('split')) {
-      filters.push(`compared with ${comparison.name}${verb === 'mastered' ? ' (mastered only)' : ''}`);
+      filters.push(`compared with ${comparison.name}${verb === 'mastered' ? ' (mastered at level 5 only)' : ''}`);
     } else filters.push(compareFilterValue() === 'theyHave'
       ? `${comparison.name} ${verb}, you don't`
       : `you ${verb === 'has' ? 'have' : verb}, ${comparison.name} ${verb === 'has' ? "doesn't" : "didn't"}`);
@@ -705,7 +762,7 @@ async function loadSpriteConfig() {
 grid.addEventListener('change', handleStatusChange);
 // Touch screens can't hover: tapping a card's image shows whose tag is whose.
 grid.addEventListener('click', (event) => {
-  if (!comparison) return;
+  if (handleLevelClick(event) || !comparison) return;
   const imageWrap = event.target.closest('.card-image-wrap');
   if (imageWrap) imageWrap.closest('.card').classList.toggle('show-tags');
 });
