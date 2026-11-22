@@ -753,7 +753,11 @@ async function loadSpriteConfig() {
     return SpriteConfig.buildSpriteGroups(SpriteConfig.parseSpriteYAML(await response.text()));
   } catch (error) {
     console.warn('Unable to load sprites.yml:', error);
-    emptyMessage.textContent = 'Could not load sprites.yml. Open the site through a local web server, not as a file.';
+    // Opened as a downloaded file: browsers block fetch() there, so say how to fix it.
+    // Otherwise show the real reason (network, stale cache...) and offer a reload.
+    emptyMessage.textContent = location.protocol === 'file:'
+      ? 'This page was opened as a file. Open it from its web address instead (or a local web server).'
+      : `Couldn't load the sprite list (${error.message}). Check your connection and reload the page.`;
     emptyMessage.classList.remove('hidden');
     return [];
   }
