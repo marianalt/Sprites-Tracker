@@ -147,69 +147,69 @@ sprites:
     variants: [Classic, Gold, Cheat Master]
   - id: halfpeeld
     name: Halfpeel'd
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: repete
     name: Re-Pete
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: barryofish
     name: Barry O'Fish
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: wayfinder
     name: Wayfinder
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: chester
     name: Chester
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: exmarks
     name: Exmarks
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: kelper
     name: Kelper
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: lilsquibbly
     name: Lil' Squibbly
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: squiplash
     name: Squiplash
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: lilflacko
     name: Lil' Flacko
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: transpondersnail
     name: Transponder Snail
-    season: C7 MS · Treasure Hunters
+    season: C7 MS · One Piece
     variants: [Classic]
   - id: liluzivertjr
     name: Lil' Uzi Vert Jr.
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: sweetdreams
     name: Sweet Dreams
-    season: C7 MS · Treasure Hunters
+    season: C7 MS · One Piece
     variants: [Classic]
   - id: plundarrgh
     name: Plundarrgh
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: minimiku
     name: Mini Miku
-    season: C7 MS · Treasure Hunters
-    variants: [Classic, Fortune, Cursed]
+    season: C7 MS · One Piece
+    variants: [Classic, Fortune, Cursed, Gold]
   - id: zee
     name: Zee
-    season: C7 MS · Treasure Hunters
+    season: C7 MS · One Piece
     variants: [Classic]
   - id: siroscar
     name: Sir Oscar the Second
-    season: C7 MS · Treasure Hunters
+    season: C7 MS · One Piece
     variants: [Classic, Fortune, Cursed, Gold]

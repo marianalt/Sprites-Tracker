@@ -833,8 +833,20 @@ function seasonName(season) {
   return season === ALL_SEASONS ? 'All seasons' : season;
 }
 
+// Old season names -> current ones, so a saved default survives a rename.
+const SEASON_RENAMES = {
+  'C7 MS · Treasure Hunters': 'C7 MS · One Piece',
+};
+
+// The saved default season, or null if none has been chosen yet.
 function loadDefaultSeason() {
-  try { return localStorage.getItem(DEFAULT_SEASON_KEY) || ALL_SEASONS; } catch (error) { return ALL_SEASONS; }
+  let saved = null;
+  try { saved = localStorage.getItem(DEFAULT_SEASON_KEY); } catch (error) { return null; }
+  if (saved && SEASON_RENAMES[saved]) {
+    saved = SEASON_RENAMES[saved];
+    saveDefaultSeason(saved);
+  }
+  return saved;
 }
 
 function saveDefaultSeason(season) {
@@ -873,8 +885,9 @@ function selectSeason(season) {
 // Each row: the season name (click to view it) and a radio to make it the default.
 function populateSeasons(groups) {
   const seasons = [ALL_SEASONS, ...SpriteConfig.listSeasons(groups)];
+  // Until the player picks a default, open on the newest season.
   let defaultSeason = loadDefaultSeason();
-  if (!seasons.includes(defaultSeason)) defaultSeason = ALL_SEASONS;
+  if (!seasons.includes(defaultSeason)) defaultSeason = seasons[1] || ALL_SEASONS;
 
   seasonOptions.innerHTML = '';
   seasons.forEach((season) => {
