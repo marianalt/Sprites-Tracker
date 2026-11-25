@@ -865,7 +865,8 @@ function seasonName(season) {
 
 // Old season names -> current ones, so a saved default survives a rename.
 const SEASON_RENAMES = {
-  'C7 MS · Treasure Hunters': 'C7 MS · One Piece',
+  'C7 MS · Treasure Hunters': 'C7 TH · One Piece',
+  'C7 MS · One Piece': 'C7 TH · One Piece',
 };
 
 // The saved default season, or null if none has been chosen yet.
