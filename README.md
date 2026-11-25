@@ -20,3 +20,6 @@ Tick **Found** or **Master** and the level buttons (1-5) appear under it, starti
 - **Export CSV** (top bar) downloads your progress (`player, season, sprite, variant, status, level, id`). It opens in Excel or Google Sheets.
 - **Compare with friend** (top bar) loads a friend's exported CSV. On wide screens the page splits in half: *"<friend> has"* on the left (they found or mastered it, you don't have it or only found it) and *"You have"* on the right (the reverse). On phones you switch between the two with a toggle. A second filter replaces the progress line: *All different* (default) shows sprites where one of you has a higher level, *Mastered only (level 5)* keeps just the ones one of you has mastered at level 5 and the other hasn't, and *All* shows every sprite in one grid with your friend's status on each card. Each card shows the friend's status. Press × to stop comparing.
 - Rows are matched on the `id` column, so don't edit it. Older files without a `level` column still work (every sprite counts as level 1).
+
+# Releasing changes
+Phones cache `script.js`, `sprite-config.js` and `styles.css`. After changing any of them, bump the `?v=` number on their links in `index.html` (e.g. `?v=2` -> `?v=3`) so browsers download the new files.
