@@ -327,12 +327,11 @@ function refreshView(status = loadStatus()) {
       if (comparison) {
         const friendValue = comparison.statuses[card.dataset.spriteId];
         if (primary && inSeason && (!query || card.dataset.search.includes(query))) {
-          // Side buttons count within the chosen scope; scope buttons count within the
-          // chosen side (or both sides when they are shown side by side).
+          // Side buttons count within the chosen scope; scope buttons count both sides,
+          // so the numbers are the same on phones and wide screens.
           if (compareMatch('theyHave', compareScope, entry, friendValue)) compareCounts.theyHave += 1;
           if (compareMatch('youHave', compareScope, entry, friendValue)) compareCounts.youHave += 1;
-          const scopeSides = split || compareScope === 'everything' ? ['theyHave', 'youHave'] : [compareMode];
-          scopeSides.forEach((scopeSide) => {
+          ['theyHave', 'youHave'].forEach((scopeSide) => {
             if (compareMatch(scopeSide, 'different', entry, friendValue)) compareCounts.different += 1;
             if (compareMatch(scopeSide, 'mastered', entry, friendValue)) compareCounts.mastered += 1;
           });
@@ -368,7 +367,34 @@ function refreshView(status = loadStatus()) {
     compareScopeEverythingCount.textContent = compareCounts.everything;
     compareScopeMasteredCount.textContent = compareCounts.mastered;
   }
-  if (allIds.length) emptyMessage.classList.toggle('hidden', visibleCards > 0 || split);
+  if (allIds.length) {
+    emptyMessage.textContent = comparison && !split && compareScope !== 'everything'
+      ? emptySideMessage(compareMode, compareCounts)
+      : 'No sprites match.';
+    emptyMessage.classList.toggle('hidden', visibleCards > 0 || split);
+  }
+}
+
+// Phones show one side at a time; say so when that side is empty.
+function emptySideMessage(side, counts) {
+  const name = comparison.name;
+  if (!counts.theyHave && !counts.youHave) return `You and ${name} are even on everything here.`;
+  return side === 'theyHave'
+    ? `${name} isn't ahead of you here. Tap "You have" to see where you're ahead.`
+    : `You aren't ahead of ${name} here. Tap "${name} has" to see where they're ahead.`;
+}
+
+// Phones show one side at a time: if the chosen side is empty and the other
+// isn't, switch to the other one so the page doesn't look broken.
+function showNonEmptySide() {
+  if (!comparison || grid.classList.contains('split') || compareScopeValue() === 'everything') return;
+  const counts = { theyHave: Number(theyHaveCount.textContent), youHave: Number(youHaveCount.textContent) };
+  const side = compareFilterValue();
+  const other = side === 'theyHave' ? 'youHave' : 'theyHave';
+  if (counts[side] === 0 && counts[other] > 0) {
+    compareBar.querySelector(`input[value="${other}"]`).checked = true;
+    refreshView();
+  }
 }
 
 // Cards can appear twice in split view, so tick boxes are re-synced from saved progress.
@@ -554,6 +580,7 @@ function startComparison(result) {
     ? `Comparing with ${result.name}. ${skippedMessage(result.unknown)}`
     : '');
   renderCards();
+  showNonEmptySide();
 }
 
 function stopComparison() {
@@ -788,7 +815,10 @@ compareFile.addEventListener('change', async () => {
 });
 compareBar.addEventListener('change', () => refreshView());
 // Switching to or from "All" changes the layout (split halves vs one grid).
-compareScopeFilter.addEventListener('change', () => renderCards());
+compareScopeFilter.addEventListener('change', () => {
+  renderCards();
+  showNonEmptySide();
+});
 splitQuery.addEventListener('change', () => {
   if (comparison) renderCards();
 });
