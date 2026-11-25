@@ -275,7 +275,6 @@ function formatCounts(counts) {
 
 function matchesFilter(value, filter) {
   if (filter === 'all') return true;
-  if (filter === 'found') return value === 'found' || value === 'master';
   return value === filter;
 }
 
@@ -320,7 +319,7 @@ function refreshView(status = loadStatus()) {
       if (primary && inSeason && (!query || card.dataset.search.includes(query))) {
         optionCounts.all += 1;
         if (value === 'none') optionCounts.none += 1;
-        if (matchesFilter(value, 'found')) optionCounts.found += 1;
+        if (value === 'found') optionCounts.found += 1;
         if (value === 'master') optionCounts.master += 1;
       }
       let shown = matchesFilter(value, filter);
